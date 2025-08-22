@@ -1,13 +1,17 @@
 'use client';
 
- // any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
-
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from 'react-bootstrap';
-import { signOut } from '@/utils/auth'; // anything in the src dir, you can use the @ instead of relative paths
-import { useAuth } from '@/utils/context/authContext';
+import { getCategories } from '../utils/data/category_data';
 
 function Home() {
-  const { user } = useAuth();
+  const router = useRouter();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategories().then(setCategories);
+  }, []);
 
   return (
     <div
@@ -19,11 +23,11 @@ function Home() {
         margin: '0 auto',
       }}
     >
-      <h1>Hello {user.displayName}! </h1>
-      <p>Click the button below to logout!</p>
-      <Button variant="danger" type="button" size="lg" className="copy-btn" onClick={signOut}>
-        Sign Out
-      </Button>
+      {categories.map((category) => (
+        <Button key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
+          {category.label}
+        </Button>
+      ))}
     </div>
   );
 }
