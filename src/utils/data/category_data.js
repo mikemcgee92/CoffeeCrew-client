@@ -1,7 +1,7 @@
-const dbURL = process.env.NEXT_PUBLIC_DATABASE_URL;
+import { clientCredentials } from '../client';
 
 const getCategories = async () => {
-  const response = await fetch(`${dbURL}/categories`, {
+  const response = await fetch(`${clientCredentials.databaseURL}/categories`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ const getCategories = async () => {
 };
 
 const createCategory = async (category) => {
-  const response = await fetch(`${dbURL}/categories`, {
+  const response = await fetch(`${clientCredentials.databaseURL}/categories`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

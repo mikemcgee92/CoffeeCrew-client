@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from 'react-bootstrap';
 import { getCategories } from '../utils/data/category_data';
 
 function Home() {
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -22,7 +24,9 @@ function Home() {
       }}
     >
       {categories.map((category) => (
-        <Button>{category.label}</Button>
+        <Button key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
+          {category.label}
+        </Button>
       ))}
     </div>
   );
