@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-// import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-import getRecipes from '../../utils/data/recipe_data';
+import { getRecipes } from '../../utils/data/recipe_data';
 
 export default function RecipesPage() {
   const [recipesArray, setRecipesArray] = useState([]);
@@ -34,7 +33,3 @@ export default function RecipesPage() {
     </div>
   );
 }
-
-// RecipesPage.propTypes = {
-//   params: PropTypes.string,
-// }

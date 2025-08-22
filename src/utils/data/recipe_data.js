@@ -10,4 +10,14 @@ const getRecipes = async (optionalParams) => {
   return response.json();
 };
 
-export default getRecipes;
+const getSingleRecipe = async (id) => {
+  const response = await fetch(`${clientCredentials.databaseURL}${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return response.json();
+};
+
+export { getRecipes, getSingleRecipe };
