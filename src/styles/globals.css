@@ -2,3 +2,23 @@ body {
   background: black;
   color: white;
 }
+
+/* Category page */
+.btn-primary {
+  width: 15rem;
+  margin: .25rem 0 .25rem 0;
+}
+.btn-info {
+  width: 3rem;
+}
+.btn-danger.cat {
+  width: 3rem;
+}
+
+.category-button-row {
+  display: flex;
+}
+
+.category-modal {
+  color: black;
+}

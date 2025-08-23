@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from 'react-bootstrap';
-import { getCategories } from '../utils/data/category_data';
+import { Button, Modal, Form } from 'react-bootstrap';
+import { getCategories, createCategory } from '../utils/data/category_data';
 
 function Home() {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
+  const [categoryLabel, setCategoryLabel] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClose = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   useEffect(() => {
     getCategories().then(setCategories);
@@ -26,10 +31,42 @@ function Home() {
       <title>CoffeeCrew</title>
       <link rel="icon" href="favicon.ico" />
       {categories.map((category) => (
-        <Button key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
-          {category.label}
-        </Button>
+        <div className="category-button-row">
+          <Button className="btn btn-primary" key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
+            {category.label}
+          </Button>
+          <Button className="btn btn-info">E</Button>
+          <Button className="btn btn-danger cat">X</Button>
+        </div>
       ))}
+      <div>
+        <Button className="btn btn-success" onClick={handleShowModal}>
+          + New Category
+        </Button>
+
+        <Modal className="category-modal" show={showModal} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create New Category:</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="categoryForm.Label" />
+              <Form.Control type="text" placeholder="Name" autoFocus value={categoryLabel} onChange={(e) => setCategoryLabel(e.target.value)} />
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="success"
+              onClick={() => {
+                createCategory({ label: categoryLabel });
+                handleClose();
+              }}
+            >
+              Save changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </div>
   );
 }
