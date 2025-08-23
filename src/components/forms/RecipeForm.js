@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getSingleRecipe } from '../../utils/data/recipe_data';
+import CategorySelector from '../CategorySelector';
 
 function RecipeForm({ recipeId }) {
   const [recipe, setRecipe] = useState({});
@@ -9,12 +10,14 @@ function RecipeForm({ recipeId }) {
   if (recipeId) {
     getSingleRecipe(recipeId).then(setRecipe);
   }
+
   return (
     <div>
       <Form className="recipe-form">
         <Form.Group className="mb-3" controlId="formRecipeLabel">
           <Form.Label>Name</Form.Label>
           <Form.Control type="text" placeholder={recipeId ? recipe.label : 'Enter new name'} />
+          <CategorySelector />
         </Form.Group>
       </Form>
     </div>
