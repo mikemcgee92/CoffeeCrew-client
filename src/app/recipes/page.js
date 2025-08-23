@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from 'react-bootstrap';
-import { getRecipes } from '../../utils/data/recipe_data';
+import { getRecipes, deleteRecipe } from '../../utils/data/recipe_data';
 
 export default function RecipesPage() {
   const [recipesArray, setRecipesArray] = useState([]);
   const router = useRouter();
-  const pageURL = new URL(window.location.href);
-  const query = pageURL.searchParams;
+  const query = window.location.search;
 
   useEffect(() => {
-    getRecipes(query || '').then(setRecipesArray);
+    console.warn(query);
+    getRecipes(query).then(setRecipesArray);
   }, [query]);
 
   return (
@@ -26,9 +26,21 @@ export default function RecipesPage() {
       }}
     >
       {recipesArray.map((recipe) => (
-        <Button key={recipe.id} onClick={() => router.push(`/recipes/${recipe.id}`)}>
-          {recipe.label}
-        </Button>
+        <div key={recipe.id} className="button-row">
+          <Button className="btn btn-primary" onClick={() => router.push(`/recipes/${recipe.id}`)}>
+            {recipe.label}
+          </Button>
+          <Button className="btn btn-info">E</Button>
+          <Button
+            className="btn btn-danger cat"
+            onClick={() => {
+              deleteRecipe(recipe.id);
+              window.location.reload();
+            }}
+          >
+            X
+          </Button>
+        </div>
       ))}
     </div>
   );
