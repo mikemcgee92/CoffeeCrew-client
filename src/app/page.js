@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { getCategories, createCategory, deleteCategory } from '../utils/data/category_data';
+import { getCategories, createCategory, deleteCategory, updateCategory } from '../utils/data/category_data';
 
 function Home() {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [categoryLabel, setCategoryLabel] = useState('');
+  const [editId, setEditId] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const handleClose = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -31,11 +33,21 @@ function Home() {
       <title>CoffeeCrew</title>
       <link rel="icon" href="favicon.ico" />
       {categories.map((category) => (
-        <div className="category-button-row">
+        <div key={category.id} className="category-button-row">
           <Button className="btn btn-primary" key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
             {category.label}
           </Button>
-          <Button className="btn btn-info">E</Button>
+          <Button
+            className="btn btn-info"
+            onClick={() => {
+              setCategoryLabel(category.label);
+              setEditId(category.id);
+              setEditMode(true);
+              handleShowModal();
+            }}
+          >
+            E
+          </Button>
           <Button
             className="btn btn-danger cat"
             onClick={() => {
@@ -54,7 +66,7 @@ function Home() {
 
         <Modal className="category-modal" show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Create New Category:</Modal.Title>
+            <Modal.Title>{editMode ? `Edit category label` : `Create new category`}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -66,11 +78,15 @@ function Home() {
             <Button
               variant="success"
               onClick={() => {
-                createCategory({ label: categoryLabel });
+                if (!editMode) {
+                  createCategory({ label: categoryLabel });
+                } else if (editMode) {
+                  updateCategory(editId, { label: categoryLabel });
+                }
                 window.location.reload();
               }}
             >
-              Save changes
+              {editMode ? 'Save changes' : 'Save new category'}
             </Button>
           </Modal.Footer>
         </Modal>
