@@ -20,6 +20,7 @@ export default function RecipeDetailPage() {
       <h1>{recipe.label}</h1>
       {console.warn(recipe)}
       <h5>{recipe.category_id?.label}</h5>
+      {/* TODO: Group ingredients by size, add button to switch between */}
       {recipe.ingredient_amounts?.map((ingredient) => (
         <h5>
           {ingredient.size}: {ingredient.amount} of {ingredient.ingredient.label}
