@@ -33,7 +33,7 @@ function Home() {
       <title>CoffeeCrew</title>
       <link rel="icon" href="favicon.ico" />
       {categories.map((category) => (
-        <div key={category.id} className="category-button-row">
+        <div key={category.id} className="button-row">
           <Button className="btn btn-primary" key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
             {category.label}
           </Button>

@@ -3,7 +3,7 @@ body {
   color: white;
 }
 
-/* Category page */
+
 .btn-primary {
   width: 15rem;
   margin: .25rem 0 .25rem 0;
@@ -15,7 +15,7 @@ body {
   width: 3rem;
 }
 
-.category-button-row {
+.button-row {
   display: flex;
 }
 
