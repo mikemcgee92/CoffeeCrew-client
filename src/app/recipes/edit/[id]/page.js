@@ -1,5 +1,13 @@
-import React from 'react';
+'use client';
 
-export default function EditRecipe() {
-  return <div>Insert form component and grab edit data</div>;
+import RecipeForm from '../../../../components/forms/RecipeForm';
+
+export default function EditRecipePage() {
+  // TODO: pass in recipe object ID
+  return (
+    <div>
+      <h1>Edit Recipe</h1>
+      <RecipeForm recipe={1} />
+    </div>
+  );
 }
