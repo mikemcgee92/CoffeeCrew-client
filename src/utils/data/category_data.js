@@ -21,4 +21,13 @@ const createCategory = async (category) => {
   return response.json();
 };
 
-export { getCategories, createCategory };
+const deleteCategory = async (id) => {
+  await fetch(`${clientCredentials.databaseURL}/categories/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export { getCategories, createCategory, deleteCategory };

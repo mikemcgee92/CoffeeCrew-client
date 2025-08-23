@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
-import { getCategories, createCategory } from '../utils/data/category_data';
+import { getCategories, createCategory, deleteCategory } from '../utils/data/category_data';
 
 function Home() {
   const router = useRouter();
@@ -36,7 +36,15 @@ function Home() {
             {category.label}
           </Button>
           <Button className="btn btn-info">E</Button>
-          <Button className="btn btn-danger cat">X</Button>
+          <Button
+            className="btn btn-danger cat"
+            onClick={() => {
+              deleteCategory(category.id);
+              window.location.reload();
+            }}
+          >
+            X
+          </Button>
         </div>
       ))}
       <div>
@@ -59,7 +67,7 @@ function Home() {
               variant="success"
               onClick={() => {
                 createCategory({ label: categoryLabel });
-                handleClose();
+                window.location.reload();
               }}
             >
               Save changes
