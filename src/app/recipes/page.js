@@ -11,7 +11,6 @@ export default function RecipesPage() {
   const query = window.location.search;
 
   useEffect(() => {
-    console.warn(query);
     getRecipes(query).then(setRecipesArray);
   }, [query]);
 
@@ -25,6 +24,8 @@ export default function RecipesPage() {
         margin: '0 auto',
       }}
     >
+      <title>{recipesArray[0]?.category_id.label}</title>
+      <h1>{recipesArray[0]?.category_id.label}</h1>
       {recipesArray.map((recipe) => (
         <div key={recipe.id} className="button-row">
           <Button className="btn btn-primary" onClick={() => router.push(`/recipes/${recipe.id}`)}>
@@ -42,6 +43,11 @@ export default function RecipesPage() {
           </Button>
         </div>
       ))}
+      <div>
+        <Button className="btn btn-success" onClick={() => router.push('/recipes/new')}>
+          + New Recipe
+        </Button>
+      </div>
     </div>
   );
 }

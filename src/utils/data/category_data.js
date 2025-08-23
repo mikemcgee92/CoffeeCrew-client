@@ -10,6 +10,16 @@ const getCategories = async () => {
   return response.json();
 };
 
+const getSingleCategory = async (id) => {
+  const response = await fetch(`${clientCredentials.databaseURL}/categories/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return response.json();
+};
+
 const createCategory = async (category) => {
   const response = await fetch(`${clientCredentials.databaseURL}/categories`, {
     method: 'POST',
@@ -41,4 +51,4 @@ const deleteCategory = async (id) => {
   });
 };
 
-export { getCategories, createCategory, deleteCategory, updateCategory };
+export { getCategories, getSingleCategory, createCategory, deleteCategory, updateCategory };
