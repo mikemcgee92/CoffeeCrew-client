@@ -37,10 +37,10 @@ function RecipeForm({ recipeId }) {
 
       if (!recipeId) {
         await createRecipe(recipeData);
-        router.push(`/recipes?category=${recipeData.category_id}`);
+        router.push(`/recipes?category_id=${recipeData.category_id}`);
       } else {
         await updateRecipe(recipeId, recipeData);
-        router.push(`/recipes?category=${recipeData.category_id}`);
+        router.push(`/recipes?category_id=${recipeData.category_id}`);
       }
     } catch (err) {
       console.error(err);
