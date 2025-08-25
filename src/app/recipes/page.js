@@ -12,7 +12,7 @@ export default function RecipesPage() {
 
   useEffect(() => {
     getRecipes(query).then(setRecipesArray);
-  }, [query]);
+  }, [query, router]);
 
   return (
     <div
@@ -24,14 +24,16 @@ export default function RecipesPage() {
         margin: '0 auto',
       }}
     >
-      <title>{recipesArray[0]?.category_id.label}</title>
-      <h1>{recipesArray[0]?.category_id.label}</h1>
+      <title>{query ? recipesArray[0]?.category_id.label : 'All recipes'}</title>
+      <h1>{query ? recipesArray[0]?.category_id.label : 'All recipes'}</h1>
       {recipesArray.map((recipe) => (
         <div key={recipe.id} className="button-row">
           <Button className="btn btn-primary" onClick={() => router.push(`/recipes/${recipe.id}`)}>
             {recipe.label}
           </Button>
-          <Button className="btn btn-info">E</Button>
+          <Button className="btn btn-info" onClick={() => router.push(`/recipes/edit/${recipe.id}`)}>
+            E
+          </Button>
           <Button
             className="btn btn-danger cat"
             onClick={() => {

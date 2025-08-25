@@ -11,7 +11,7 @@ const getRecipes = async (optionalParams) => {
 };
 
 const getSingleRecipe = async (id) => {
-  const response = await fetch(`${clientCredentials.databaseURL}${id}`, {
+  const response = await fetch(`${clientCredentials.databaseURL}/recipes/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
