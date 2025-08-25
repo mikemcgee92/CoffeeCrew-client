@@ -26,7 +26,6 @@ export default function RecipesPage() {
         margin: '0 auto',
       }}
     >
-      {console.warn(query)}
       <title>{query ? recipesArray[0]?.category_id.label : 'All recipes'}</title>
       <h1>{query ? recipesArray[0]?.category_id.label : 'All recipes'}</h1>
       {recipesArray.map((recipe) => (
