@@ -3,14 +3,16 @@ body {
   color: white;
 }
 
-
+/* List buttons */
 .btn-primary {
   width: 15rem;
   margin: .25rem 0 .25rem 0;
 }
+
 .btn-info {
   width: 3rem;
 }
+
 .btn-danger.cat {
   width: 3rem;
 }
@@ -19,6 +21,15 @@ body {
   display: flex;
 }
 
+/* Category modal */
 .category-modal {
   color: black;
+}
+
+/* Recipe Form */
+.recipe-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40rem;
 }

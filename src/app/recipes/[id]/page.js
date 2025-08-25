@@ -7,22 +7,23 @@ import { getSingleRecipe } from '../../../utils/data/recipe_data';
 export default function RecipeDetailPage() {
   const pageURL = new URL(window.location.href);
   const pathWithId = pageURL.pathname;
+  const path = pathWithId.split('/')[2];
+
   const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
-    getSingleRecipe(pathWithId).then(setRecipe);
-  }, [pathWithId]);
+    getSingleRecipe(path).then(setRecipe);
+  }, [path]);
 
   return (
     <div>
       <title>{recipe.label}</title>
       <Image src={recipe.image_url} alt={recipe.label} />
       <h1>{recipe.label}</h1>
-      {console.warn(recipe)}
       <h5>{recipe.category_id?.label}</h5>
       {/* TODO: Group ingredients by size, add button to switch between */}
       {recipe.ingredient_amounts?.map((ingredient) => (
-        <h5>
+        <h5 key={ingredient.size + ingredient.amount + ingredient.label}>
           {ingredient.size}: {ingredient.amount} of {ingredient.ingredient.label}
         </h5>
       ))}

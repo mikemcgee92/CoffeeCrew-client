@@ -1,22 +1,23 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from 'react-bootstrap';
 import { getRecipes, deleteRecipe } from '../../utils/data/recipe_data';
 
 export default function RecipesPage() {
   const [recipesArray, setRecipesArray] = useState([]);
   const router = useRouter();
-  const query = window.location.search;
+  const searchParams = useSearchParams();
+  const query = searchParams.toString() ? `?${searchParams.toString()}` : '';
 
   useEffect(() => {
-    console.warn(query);
     getRecipes(query).then(setRecipesArray);
   }, [query]);
 
   return (
     <div
+      key={query}
       className="text-center d-flex flex-column justify-content-center align-content-center"
       style={{
         height: '90vh',
@@ -25,12 +26,17 @@ export default function RecipesPage() {
         margin: '0 auto',
       }}
     >
+      {console.warn(query)}
+      <title>{query ? recipesArray[0]?.category_id.label : 'All recipes'}</title>
+      <h1>{query ? recipesArray[0]?.category_id.label : 'All recipes'}</h1>
       {recipesArray.map((recipe) => (
         <div key={recipe.id} className="button-row">
           <Button className="btn btn-primary" onClick={() => router.push(`/recipes/${recipe.id}`)}>
             {recipe.label}
           </Button>
-          <Button className="btn btn-info">E</Button>
+          <Button className="btn btn-info" onClick={() => router.push(`/recipes/edit/${recipe.id}`)}>
+            E
+          </Button>
           <Button
             className="btn btn-danger cat"
             onClick={() => {
@@ -42,6 +48,11 @@ export default function RecipesPage() {
           </Button>
         </div>
       ))}
+      <div>
+        <Button className="btn btn-success" onClick={() => router.push('/recipes/new')}>
+          + New Recipe
+        </Button>
+      </div>
     </div>
   );
 }
