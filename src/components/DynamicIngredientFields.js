@@ -25,8 +25,7 @@ function DynamicIngredientFields({ value, onChange }) {
       ...newAmounts[index],
       [fieldName]: e.target.value,
     };
-    setIngredientAmounts(newAmounts);
-    onChange(ingredientAmounts);
+    onChange(newAmounts);
   };
 
   useEffect(() => {
