@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 
 import IngredientSelector from './IngredientSelector';
 
-function DynamicIngredientFields({ value }) {
+function DynamicIngredientFields({ value, onChange }) {
   const [ingredientAmounts, setIngredientAmounts] = useState([]);
   const [counter, setCounter] = useState(0);
 
   const handleClickAdd = () => {
+    setIngredientAmounts((prev) => [...prev, { size: '', amount: '', ingredient: { id: '' } }]);
     setCounter(counter + 1);
   };
   const handleClickRemove = () => {
     if (counter > 0) {
+      setIngredientAmounts((prev) => prev.slice(0, -1));
       setCounter(counter - 1);
     }
   };
@@ -24,6 +26,7 @@ function DynamicIngredientFields({ value }) {
       [fieldName]: e.target.value,
     };
     setIngredientAmounts(newAmounts);
+    onChange(ingredientAmounts);
   };
 
   useEffect(() => {
@@ -41,12 +44,12 @@ function DynamicIngredientFields({ value }) {
         <div className="ingredient-amount-container" key={index}>
           <InputGroup>
             <InputGroup.Text id={`ingredient_amount_size-${index}`}>Size</InputGroup.Text>
-            <Form.Control name={`ingredient_amount_size-${index}`} value={ingredientAmounts[index]?.size} onChange={handleLocalChange(index, 'size')} placeholder="Enter size" />
+            <Form.Control name={`ingredient_amount_size-${index}`} value={ingredientAmounts[index]?.size || ''} onChange={handleLocalChange(index, 'size')} placeholder="Enter size" />
           </InputGroup>
-          <IngredientSelector name={`ingredient_amount_ingredient-${index}`} value={ingredientAmounts[index]?.ingredient?.id} onChange={handleLocalChange(index, 'ingredient')} />
+          <IngredientSelector value={ingredientAmounts[index]?.ingredient?.id} onChange={handleLocalChange(index, 'ingredient')} />
           <InputGroup>
             <InputGroup.Text id={`ingredient_amount_amount-${index}`}>amount</InputGroup.Text>
-            <Form.Control name={`ingredient_amount_amount-${index}`} value={ingredientAmounts[index]?.amount} onChange={handleLocalChange(index, 'amount')} placeholder="Enter amount" />
+            <Form.Control name={`ingredient_amount_amount-${index}`} value={ingredientAmounts[index]?.amount || ''} onChange={handleLocalChange(index, 'amount')} placeholder="Enter amount" />
           </InputGroup>
         </div>
       ))}
@@ -59,4 +62,5 @@ export default DynamicIngredientFields;
 
 DynamicIngredientFields.propTypes = {
   value: PropTypes.arrayOf,
+  onChange: PropTypes.func,
 };

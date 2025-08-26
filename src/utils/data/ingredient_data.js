@@ -20,4 +20,24 @@ const getSingleIngredient = async (id) => {
   return response.json();
 };
 
-export { getIngredients, getSingleIngredient };
+const addIngredientToRecipe = async (recipeId, ingredientPayload) => {
+  await fetch(`${clientCredentials.databaseURL}/recipes/${recipeId}/ingredient`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(ingredientPayload),
+  });
+};
+
+const removeIngredientFromRecipe = async (recipeId, ingredientPayload) => {
+  await fetch(`${clientCredentials.databaseURL}/recipes/${recipeId}/ingredient`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(ingredientPayload),
+  });
+};
+
+export { getIngredients, getSingleIngredient, addIngredientToRecipe, removeIngredientFromRecipe };

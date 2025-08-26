@@ -21,12 +21,16 @@ function RecipeForm({ recipeId }) {
   const [received, setReceived] = useState(false);
 
   const handleChange = (e) => {
-    console.warn(e.target);
     const { name, value } = e.target;
     setRecipe((prev) => ({
       ...prev,
       [name]: name === 'category_id' ? Number(value) : value,
     }));
+  };
+  const handleIngredientChange = (newIngredients) => {
+    const updatedData = { ...recipe, ingredient_amounts: newIngredients };
+    setRecipe(updatedData);
+    console.warn(newIngredients);
   };
 
   const handleSubmit = async (e) => {
@@ -39,7 +43,12 @@ function RecipeForm({ recipeId }) {
       };
 
       if (!recipeId) {
-        await createRecipe(recipeData);
+        const newRecipe = await createRecipe(recipeData);
+        console.warn('newRecipe.id=', newRecipe.id);
+        // get ingredient_amounts
+        console.warn('RecipeForm: handleSubmit: recipe.ingredient_amounts=', recipe.ingredient_amounts);
+        // map through array
+        // post each with addIngredientToRecipe(newRecipe.id, ingredient_amount)
         router.push(`/recipes?category_id=${recipeData.category_id}`);
       } else {
         await updateRecipe(recipeId, recipeData);
@@ -72,7 +81,7 @@ function RecipeForm({ recipeId }) {
           <Form.Control name="label" aria-label="Recipe name" value={recipe?.label} onChange={handleChange} placeholder="Enter a name for this recipe" required />
         </InputGroup>
 
-        <DynamicIngredientFields value={recipe?.ingredient_amounts} onChange={handleChange} />
+        <DynamicIngredientFields name="ingredient_amounts" value={recipe?.ingredient_amounts} onChange={handleIngredientChange} />
 
         <InputGroup className="mb-3">
           <InputGroup.Text>Steps</InputGroup.Text>
