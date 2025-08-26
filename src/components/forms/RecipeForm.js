@@ -4,13 +4,15 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getSingleRecipe, createRecipe, updateRecipe } from '../../utils/data/recipe_data';
 import CategorySelector from '../CategorySelector';
+import DynamicIngredientFields from '../DynamicIngredientFields';
 
 function RecipeForm({ recipeId }) {
   const router = useRouter();
 
   const [recipe, setRecipe] = useState({
     label: '',
-    category_id: '', // will always be an integer
+    category_id: '',
+    ingredient_amounts: [],
     steps: '',
     notes: '',
     image_url: '',
@@ -19,6 +21,7 @@ function RecipeForm({ recipeId }) {
   const [received, setReceived] = useState(false);
 
   const handleChange = (e) => {
+    console.warn(e.target);
     const { name, value } = e.target;
     setRecipe((prev) => ({
       ...prev,
@@ -68,6 +71,8 @@ function RecipeForm({ recipeId }) {
           <InputGroup.Text id="recipe-label">Name</InputGroup.Text>
           <Form.Control name="label" aria-label="Recipe name" value={recipe?.label} onChange={handleChange} placeholder="Enter a name for this recipe" required />
         </InputGroup>
+
+        <DynamicIngredientFields value={recipe?.ingredient_amounts} onChange={handleChange} />
 
         <InputGroup className="mb-3">
           <InputGroup.Text>Steps</InputGroup.Text>

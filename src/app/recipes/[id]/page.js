@@ -2,18 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { Image } from 'react-bootstrap';
+import { useParams } from 'next/navigation';
 import { getSingleRecipe } from '../../../utils/data/recipe_data';
 
 export default function RecipeDetailPage() {
-  const pageURL = new URL(window.location.href);
-  const pathWithId = pageURL.pathname;
-  const path = pathWithId.split('/')[2];
-
+  const { id } = useParams();
   const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
-    getSingleRecipe(path).then(setRecipe);
-  }, [path]);
+    if (id && id !== 'undefined') {
+      getSingleRecipe(id).then(setRecipe);
+    }
+  }, [id]);
 
   return (
     <div>
