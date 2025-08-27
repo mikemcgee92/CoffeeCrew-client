@@ -13,7 +13,7 @@ function IngredientSelector({ value, onChange }) {
 
   return (
     <div>
-      <Form.Select id="ingredient_id" name="ingredient_id" value={value} onChange={onChange} required>
+      <Form.Select id={`${value}`} name="ingredient_id" value={value} onChange={onChange} required>
         <option value="">Select ingredient</option>
         {ingredients.map((ingredient) => (
           <option key={ingredient.id} value={ingredient.id}>

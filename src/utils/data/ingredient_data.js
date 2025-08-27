@@ -40,4 +40,13 @@ const removeIngredientFromRecipe = async (recipeId, ingredientPayload) => {
   });
 };
 
-export { getIngredients, getSingleIngredient, addIngredientToRecipe, removeIngredientFromRecipe };
+const removeAllIngredients = async (recipeId) => {
+  await fetch(`${clientCredentials.databaseURL}/recipes/${recipeId}/remove-ingredients`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export { getIngredients, getSingleIngredient, addIngredientToRecipe, removeIngredientFromRecipe, removeAllIngredients };

@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Form, InputGroup, Button } from 'react-bootstrap';
+
+import firebase from 'firebase';
+import 'firebase/auth';
+
 import PropTypes from 'prop-types';
+
 import { getSingleRecipe, createRecipe, updateRecipe } from '../../utils/data/recipe_data';
-import { addIngredientToRecipe } from '../../utils/data/ingredient_data';
+import { addIngredientToRecipe, removeAllIngredients } from '../../utils/data/ingredient_data';
 import CategorySelector from '../CategorySelector';
 import DynamicIngredientFields from '../DynamicIngredientFields';
 
 function RecipeForm({ recipeId }) {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
+
   const router = useRouter();
 
   const [recipe, setRecipe] = useState({
@@ -30,6 +38,7 @@ function RecipeForm({ recipeId }) {
   };
   const handleIngredientChange = (newIngredients) => {
     const updatedData = { ...recipe, ingredient_amounts: newIngredients };
+    console.warn('RecipeForm: handleIngredientChange: newIngredients=', newIngredients);
     setRecipe(updatedData);
   };
 
@@ -39,7 +48,7 @@ function RecipeForm({ recipeId }) {
     try {
       const recipeData = {
         ...recipe,
-        creator_id: 'default_user', // FIXME: get user firebaseKey here
+        creator_id: user.uid, // FIXME: get user firebaseKey here
       };
 
       if (!recipeId) {
@@ -56,10 +65,20 @@ function RecipeForm({ recipeId }) {
         router.push(`/recipes?category_id=${recipeData.category_id}`);
       } else {
         await updateRecipe(recipeId, recipeData);
+        await removeAllIngredients(recipeId);
+        recipeData.ingredient_amounts.map((ingredientAmount) => {
+          const JSONpayload = {
+            size: ingredientAmount.size,
+            ingredient: ingredientAmount.ingredient.id,
+            amount: ingredientAmount.amount,
+          };
+          const response = addIngredientToRecipe(recipeId, JSONpayload);
+          return response;
+        });
         router.push(`/recipes?category_id=${recipeData.category_id}`);
       }
     } catch (err) {
-      console.error(err);
+      console.error(err, 'recipe= ', recipe, ' recipeId= ', recipeId);
     }
   };
 
