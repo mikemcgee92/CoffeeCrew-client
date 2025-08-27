@@ -33,3 +33,7 @@ body {
   align-items: center;
   width: 40rem;
 }
+
+.ingredient-amount-container {
+  margin: .25rem;
+}

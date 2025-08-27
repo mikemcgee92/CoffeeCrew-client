@@ -3,14 +3,17 @@ import { useRouter } from 'next/navigation';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getSingleRecipe, createRecipe, updateRecipe } from '../../utils/data/recipe_data';
+import { addIngredientToRecipe } from '../../utils/data/ingredient_data';
 import CategorySelector from '../CategorySelector';
+import DynamicIngredientFields from '../DynamicIngredientFields';
 
 function RecipeForm({ recipeId }) {
   const router = useRouter();
 
   const [recipe, setRecipe] = useState({
     label: '',
-    category_id: '', // will always be an integer
+    category_id: '',
+    ingredient_amounts: [],
     steps: '',
     notes: '',
     image_url: '',
@@ -25,6 +28,10 @@ function RecipeForm({ recipeId }) {
       [name]: name === 'category_id' ? Number(value) : value,
     }));
   };
+  const handleIngredientChange = (newIngredients) => {
+    const updatedData = { ...recipe, ingredient_amounts: newIngredients };
+    setRecipe(updatedData);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +43,16 @@ function RecipeForm({ recipeId }) {
       };
 
       if (!recipeId) {
-        await createRecipe(recipeData);
+        const newRecipe = await createRecipe(recipeData);
+        recipeData.ingredient_amounts.map((ingredientAmount) => {
+          const JSONpayload = {
+            size: ingredientAmount.size,
+            ingredient: ingredientAmount.ingredient.id,
+            amount: ingredientAmount.amount,
+          };
+          const response = addIngredientToRecipe(newRecipe.id, JSONpayload);
+          return response;
+        });
         router.push(`/recipes?category_id=${recipeData.category_id}`);
       } else {
         await updateRecipe(recipeId, recipeData);
@@ -68,6 +84,8 @@ function RecipeForm({ recipeId }) {
           <InputGroup.Text id="recipe-label">Name</InputGroup.Text>
           <Form.Control name="label" aria-label="Recipe name" value={recipe?.label} onChange={handleChange} placeholder="Enter a name for this recipe" required />
         </InputGroup>
+
+        <DynamicIngredientFields name="ingredient_amounts" value={recipe?.ingredient_amounts} onChange={handleIngredientChange} />
 
         <InputGroup className="mb-3">
           <InputGroup.Text>Steps</InputGroup.Text>
