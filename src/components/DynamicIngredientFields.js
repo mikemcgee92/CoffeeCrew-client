@@ -15,17 +15,18 @@ function DynamicIngredientFields({ value, onChange }) {
   const [counter, setCounter] = useState(0);
 
   const handleClickAdd = () => {
-    setIngredientAmounts((prev) => [...prev, { size: '', amount: '', ingredient: { id: '' } }]);
+    onChange([...value, { size: '', amount: '', ingredient: { id: '' } }]);
     setCounter(counter + 1);
   };
   const handleClickRemove = () => {
     if (counter > 0) {
-      setIngredientAmounts((prev) => prev.slice(0, -1));
+      onChange(value.slice(0, -1));
       setCounter(counter - 1);
     }
   };
 
   const handleLocalChange = (e, index, fieldName) => {
+    console.warn(ingredientAmounts);
     const newAmounts = [...ingredientAmounts];
     newAmounts[index] = {
       ...newAmounts[index],
