@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { getSingleRecipe, createRecipe, updateRecipe } from '../../utils/data/recipe_data';
+import { addIngredientToRecipe } from '../../utils/data/ingredient_data';
 import CategorySelector from '../CategorySelector';
 import DynamicIngredientFields from '../DynamicIngredientFields';
 
@@ -43,11 +44,15 @@ function RecipeForm({ recipeId }) {
 
       if (!recipeId) {
         const newRecipe = await createRecipe(recipeData);
-        console.warn('newRecipe.id=', newRecipe.id);
-        // get ingredient_amounts
-        console.warn('RecipeForm: handleSubmit: recipe.ingredient_amounts=', recipe.ingredient_amounts);
-        // map through array
-        // post each with addIngredientToRecipe(newRecipe.id, ingredient_amount)
+        recipeData.ingredient_amounts.map((ingredientAmount) => {
+          const JSONpayload = {
+            size: ingredientAmount.size,
+            ingredient: ingredientAmount.ingredient.id,
+            amount: ingredientAmount.amount,
+          };
+          const response = addIngredientToRecipe(newRecipe.id, JSONpayload);
+          return response;
+        });
         router.push(`/recipes?category_id=${recipeData.category_id}`);
       } else {
         await updateRecipe(recipeId, recipeData);
