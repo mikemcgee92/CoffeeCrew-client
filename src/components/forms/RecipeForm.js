@@ -30,7 +30,6 @@ function RecipeForm({ recipeId }) {
   const handleIngredientChange = (newIngredients) => {
     const updatedData = { ...recipe, ingredient_amounts: newIngredients };
     setRecipe(updatedData);
-    console.warn(newIngredients);
   };
 
   const handleSubmit = async (e) => {

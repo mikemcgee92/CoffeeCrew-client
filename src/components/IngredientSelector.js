@@ -28,6 +28,9 @@ function IngredientSelector({ value, onChange }) {
 export default IngredientSelector;
 
 IngredientSelector.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.shape({
+    id: PropTypes.number,
+    label: PropTypes.string,
+  }),
   onChange: PropTypes.func,
 };
