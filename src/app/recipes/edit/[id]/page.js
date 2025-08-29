@@ -9,6 +9,7 @@ export default function EditRecipePage() {
   return (
     <div>
       <h1>Edit Recipe</h1>
+      <title>Edit Recipe</title>
       <RecipeForm recipeId={id} />
     </div>
   );
