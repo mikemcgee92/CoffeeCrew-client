@@ -20,31 +20,34 @@ const getSingleIngredient = async (id) => {
   return response.json();
 };
 
-const addIngredientToRecipe = async (recipeId, ingredientPayload) => {
+const addIngredientToRecipe = async (recipeId, ingredientPayload, uid) => {
   await fetch(`${clientCredentials.databaseURL}/recipes/${recipeId}/ingredient`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: uid,
     },
     body: JSON.stringify(ingredientPayload),
   });
 };
 
-const removeIngredientFromRecipe = async (recipeId, ingredientPayload) => {
+const removeIngredientFromRecipe = async (recipeId, ingredientPayload, uid) => {
   await fetch(`${clientCredentials.databaseURL}/recipes/${recipeId}/ingredient`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: uid,
     },
     body: JSON.stringify(ingredientPayload),
   });
 };
 
-const removeAllIngredients = async (recipeId) => {
+const removeAllIngredients = async (recipeId, uid) => {
   await fetch(`${clientCredentials.databaseURL}/recipes/${recipeId}/remove-ingredients`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: uid,
     },
   });
 };

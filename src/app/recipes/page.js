@@ -3,9 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from 'react-bootstrap';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { getRecipes, deleteRecipe } from '../../utils/data/recipe_data';
 
 export default function RecipesPage() {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
+
   const [recipesArray, setRecipesArray] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,18 +38,24 @@ export default function RecipesPage() {
           <Button className="btn btn-primary" onClick={() => router.push(`/recipes/${recipe.id}`)}>
             {recipe.label}
           </Button>
-          <Button className="btn btn-info" onClick={() => router.push(`/recipes/edit/${recipe.id}`)}>
-            E
-          </Button>
-          <Button
-            className="btn btn-danger cat"
-            onClick={() => {
-              deleteRecipe(recipe.id);
-              window.location.reload();
-            }}
-          >
-            X
-          </Button>
+          {user.uid === recipe.creator_id ? (
+            <>
+              <Button className="btn btn-info" onClick={() => router.push(`/recipes/edit/${recipe.id}`)}>
+                E
+              </Button>
+              <Button
+                className="btn btn-danger cat"
+                onClick={async () => {
+                  await deleteRecipe(recipe.id, user.uid);
+                  getRecipes(query).then(setRecipesArray);
+                }}
+              >
+                X
+              </Button>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       ))}
       <div>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/auth';
 
 import PropTypes from 'prop-types';
@@ -47,31 +47,30 @@ function RecipeForm({ recipeId }) {
     try {
       const recipeData = {
         ...recipe,
-        creator_id: user.uid, // FIXME: get user firebaseKey here
       };
 
       if (!recipeId) {
-        const newRecipe = await createRecipe(recipeData);
+        const newRecipe = await createRecipe(recipeData, user.uid);
         recipeData.ingredient_amounts.map((ingredientAmount) => {
           const JSONpayload = {
             size: ingredientAmount.size,
             ingredient: ingredientAmount.ingredient.id,
             amount: ingredientAmount.amount,
           };
-          const response = addIngredientToRecipe(newRecipe.id, JSONpayload);
+          const response = addIngredientToRecipe(newRecipe.id, JSONpayload, user.uid);
           return response;
         });
         router.push(`/recipes?category_id=${recipeData.category_id}`);
       } else {
-        await updateRecipe(recipeId, recipeData);
-        await removeAllIngredients(recipeId);
+        await updateRecipe(recipeId, recipeData, user.uid);
+        await removeAllIngredients(recipeId, user.uid);
         recipeData.ingredient_amounts.map((ingredientAmount) => {
           const JSONpayload = {
             size: ingredientAmount.size,
             ingredient: ingredientAmount.ingredient.id,
             amount: ingredientAmount.amount,
           };
-          const response = addIngredientToRecipe(recipeId, JSONpayload);
+          const response = addIngredientToRecipe(recipeId, JSONpayload, user.uid);
           return response;
         });
         router.push(`/recipes?category_id=${recipeData.category_id}`);

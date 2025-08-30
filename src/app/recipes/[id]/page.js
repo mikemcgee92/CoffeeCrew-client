@@ -59,8 +59,8 @@ export default function RecipeDetailPage() {
           ''
         ),
       )}
-      <h5>{recipe.notes}</h5>
       <h5>{recipe.steps}</h5>
+      <h7>{recipe.notes}</h7>
     </div>
   );
 }
