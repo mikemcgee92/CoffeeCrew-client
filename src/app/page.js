@@ -56,9 +56,9 @@ function Home() {
               </Button>
               <Button
                 className="btn btn-danger cat"
-                onClick={() => {
-                  deleteCategory(category.id, user.uid);
-                  window.location.reload();
+                onClick={async () => {
+                  await deleteCategory(category.id, user.uid);
+                  getCategories().then(setCategories);
                 }}
               >
                 X
@@ -87,13 +87,19 @@ function Home() {
           <Modal.Footer>
             <Button
               variant="success"
-              onClick={() => {
+              onClick={async () => {
                 if (!editMode) {
-                  createCategory({ label: categoryLabel }, user.uid);
+                  await createCategory({ label: categoryLabel }, user.uid);
+                  getCategories().then(setCategories);
+                  setCategoryLabel('');
+                  setShowModal(false);
                 } else if (editMode) {
-                  updateCategory(editId, { label: categoryLabel }, user.uid);
+                  await updateCategory(editId, { label: categoryLabel }, user.uid);
+                  getCategories().then(setCategories);
+                  setCategoryLabel('');
+                  setEditMode(false);
+                  setShowModal(false);
                 }
-                window.location.reload();
               }}
             >
               {editMode ? 'Save changes' : 'Save new category'}
