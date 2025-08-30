@@ -26,7 +26,6 @@ function DynamicIngredientFields({ value, onChange }) {
   };
 
   const handleLocalChange = (e, index, fieldName) => {
-    console.warn(ingredientAmounts);
     const newAmounts = [...ingredientAmounts];
     newAmounts[index] = {
       ...newAmounts[index],

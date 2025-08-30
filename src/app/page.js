@@ -3,9 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { getCategories, createCategory, deleteCategory, updateCategory } from '../utils/data/category_data';
 
 function Home() {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [categoryLabel, setCategoryLabel] = useState('');
@@ -37,26 +41,32 @@ function Home() {
           <Button className="btn btn-primary" key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
             {category.label}
           </Button>
-          <Button
-            className="btn btn-info"
-            onClick={() => {
-              setCategoryLabel(category.label);
-              setEditId(category.id);
-              setEditMode(true);
-              handleShowModal();
-            }}
-          >
-            E
-          </Button>
-          <Button
-            className="btn btn-danger cat"
-            onClick={() => {
-              deleteCategory(category.id);
-              window.location.reload();
-            }}
-          >
-            X
-          </Button>
+          {user.uid === category.creator_id ? (
+            <>
+              <Button
+                className="btn btn-info"
+                onClick={() => {
+                  setCategoryLabel(category.label);
+                  setEditId(category.id);
+                  setEditMode(true);
+                  handleShowModal();
+                }}
+              >
+                E
+              </Button>
+              <Button
+                className="btn btn-danger cat"
+                onClick={async () => {
+                  await deleteCategory(category.id, user.uid);
+                  getCategories().then(setCategories);
+                }}
+              >
+                X
+              </Button>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       ))}
       <div>
@@ -77,13 +87,19 @@ function Home() {
           <Modal.Footer>
             <Button
               variant="success"
-              onClick={() => {
+              onClick={async () => {
                 if (!editMode) {
-                  createCategory({ label: categoryLabel });
+                  await createCategory({ label: categoryLabel }, user.uid);
+                  getCategories().then(setCategories);
+                  setCategoryLabel('');
+                  setShowModal(false);
                 } else if (editMode) {
-                  updateCategory(editId, { label: categoryLabel });
+                  await updateCategory(editId, { label: categoryLabel }, user.uid);
+                  getCategories().then(setCategories);
+                  setCategoryLabel('');
+                  setEditMode(false);
+                  setShowModal(false);
                 }
-                window.location.reload();
               }}
             >
               {editMode ? 'Save changes' : 'Save new category'}
