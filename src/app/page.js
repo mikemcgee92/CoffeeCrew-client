@@ -3,9 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { getCategories, createCategory, deleteCategory, updateCategory } from '../utils/data/category_data';
 
 function Home() {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [categoryLabel, setCategoryLabel] = useState('');
@@ -37,26 +41,32 @@ function Home() {
           <Button className="btn btn-primary" key={category.id} onClick={() => router.push(`/recipes?category_id=${category.id}`)}>
             {category.label}
           </Button>
-          <Button
-            className="btn btn-info"
-            onClick={() => {
-              setCategoryLabel(category.label);
-              setEditId(category.id);
-              setEditMode(true);
-              handleShowModal();
-            }}
-          >
-            E
-          </Button>
-          <Button
-            className="btn btn-danger cat"
-            onClick={() => {
-              deleteCategory(category.id);
-              window.location.reload();
-            }}
-          >
-            X
-          </Button>
+          {user.uid === category.creator_id ? (
+            <>
+              <Button
+                className="btn btn-info"
+                onClick={() => {
+                  setCategoryLabel(category.label);
+                  setEditId(category.id);
+                  setEditMode(true);
+                  handleShowModal();
+                }}
+              >
+                E
+              </Button>
+              <Button
+                className="btn btn-danger cat"
+                onClick={() => {
+                  deleteCategory(category.id, user.uid);
+                  window.location.reload();
+                }}
+              >
+                X
+              </Button>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       ))}
       <div>
@@ -79,9 +89,9 @@ function Home() {
               variant="success"
               onClick={() => {
                 if (!editMode) {
-                  createCategory({ label: categoryLabel });
+                  createCategory({ label: categoryLabel }, user.uid);
                 } else if (editMode) {
-                  updateCategory(editId, { label: categoryLabel });
+                  updateCategory(editId, { label: categoryLabel }, user.uid);
                 }
                 window.location.reload();
               }}
