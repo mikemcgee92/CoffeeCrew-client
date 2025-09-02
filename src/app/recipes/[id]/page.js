@@ -37,12 +37,12 @@ export default function RecipeDetailPage() {
   }, [setSelectedSize, sizes]);
 
   return (
-    <div>
+    <div className="container-styled">
       <title>{recipe.label}</title>
       <Image src={recipe.image_url} alt={recipe.label} />
       <h1>{recipe.label}</h1>
       <h5>{recipe.category_id?.label}</h5>
-      <h5>Ingredients:</h5>
+      <h7>Ingredients:</h7>
       <div className="radio-inputs" type="radio" name="sizes" value={selectedSize}>
         {sizes?.map((size) => (
           <label className="radio">
@@ -60,7 +60,7 @@ export default function RecipeDetailPage() {
           ''
         ),
       )}
-      <h5>{recipe.steps}</h5>
+      <h3>{recipe.steps}</h3>
       <h7>{recipe.notes}</h7>
     </div>
   );

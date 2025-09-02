@@ -12,6 +12,7 @@ function Signin() {
         margin: '0 auto',
       }}
     >
+      <title>CoffeeCrew - Sign In</title>
       <div className="container-styled">
         <div className="heading">CoffeeCrew</div>
         <div className="social-account-container">
