@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Image, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import { useParams } from 'next/navigation';
 import { getSingleRecipe } from '../../../utils/data/recipe_data';
 
@@ -37,19 +37,20 @@ export default function RecipeDetailPage() {
   }, [setSelectedSize, sizes]);
 
   return (
-    <div>
+    <div className="container-styled">
       <title>{recipe.label}</title>
       <Image src={recipe.image_url} alt={recipe.label} />
       <h1>{recipe.label}</h1>
       <h5>{recipe.category_id?.label}</h5>
-      <h5>Ingredients:</h5>
-      <ToggleButtonGroup type="radio" name="sizes" value={selectedSize}>
+      <h7>Ingredients:</h7>
+      <div className="radio-inputs" type="radio" name="sizes" value={selectedSize}>
         {sizes?.map((size) => (
-          <ToggleButton key={`radio-${size}`} id={`radio-${size}`} variant="outline-primary" value={size} onChange={(e) => setSelectedSize(e.currentTarget.value)}>
-            {size}
-          </ToggleButton>
+          <label className="radio">
+            <input checked={size === selectedSize} type="radio" key={`radio-${size}`} id={`radio-${size}`} value={size} onChange={(e) => setSelectedSize(e.currentTarget.value)} />
+            <span className="name">{size}</span>
+          </label>
         ))}
-      </ToggleButtonGroup>
+      </div>
       {recipe.ingredient_amounts?.map((ingredient) =>
         ingredient.size === selectedSize ? (
           <h5 key={ingredient.size + ingredient.amount + ingredient.label}>
@@ -59,7 +60,7 @@ export default function RecipeDetailPage() {
           ''
         ),
       )}
-      <h5>{recipe.steps}</h5>
+      <h3>{recipe.steps}</h3>
       <h7>{recipe.notes}</h7>
     </div>
   );
