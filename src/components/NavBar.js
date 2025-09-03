@@ -6,7 +6,7 @@ import { signOut } from '../utils/auth';
 
 export default function NavBar() {
   return (
-    <Navbar collapseOnSelect expand="lg">
+    <Navbar collapseOnSelect expand="lg" className="navbar">
       <Container>
         <Link passHref href="/" className="navbar-brand">
           CoffeeCrew
