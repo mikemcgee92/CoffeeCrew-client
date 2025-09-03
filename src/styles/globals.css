@@ -40,10 +40,9 @@ Button {
 }
 
 .recipes-container {
-  display: grid;
-  align-self: center;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 /* List buttons */
@@ -61,7 +60,7 @@ Button {
 }
 
 .button-row {
-  display: flex;
+  width: 100%;
 }
 
 /* Category modal */

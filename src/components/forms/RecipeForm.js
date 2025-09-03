@@ -93,7 +93,7 @@ function RecipeForm({ recipeId }) {
   }
 
   return (
-    <div>
+    <div className="container-styled">
       <Form className="recipe-form">
         <CategorySelector name="category_id" value={recipe.category_id} onChange={handleChange} />
 
@@ -101,7 +101,7 @@ function RecipeForm({ recipeId }) {
           <InputGroup.Text id="recipe-label">Name</InputGroup.Text>
           <Form.Control name="label" aria-label="Recipe name" value={recipe?.label} onChange={handleChange} placeholder="Enter a name for this recipe" required />
         </InputGroup>
-
+        <p>Add or remove ingredients:</p>
         <DynamicIngredientFields name="ingredient_amounts" value={recipe?.ingredient_amounts} onChange={handleIngredientChange} />
 
         <InputGroup className="mb-3">
