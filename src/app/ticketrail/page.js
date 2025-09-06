@@ -7,7 +7,6 @@ export default function TicketRail() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    console.warn('useEffect');
     const interval = setInterval(() => {
       console.warn(interval);
       getOrders().then(setOrders);
