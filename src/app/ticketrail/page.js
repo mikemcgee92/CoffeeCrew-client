@@ -7,8 +7,21 @@ export default function TicketRail() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    getOrders().then(setOrders);
+    console.warn('useEffect');
+    const interval = setInterval(() => {
+      console.warn(interval);
+      getOrders().then(setOrders);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  return <div>{orders?.map((order, index) => order.line_items[index].name)}e</div>;
+  return (
+    <div>
+      {orders?.map((order) => {
+        const itemNames = order.line_items.map((lineItem) => lineItem.name);
+        return itemNames;
+      })}
+    </div>
+  );
 }
