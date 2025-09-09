@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import getOrders from '../../utils/data/square_data';
+import { getOrders } from '../../utils/data/square_data';
 
 export default function TicketRail() {
   const [orders, setOrders] = useState([]);
