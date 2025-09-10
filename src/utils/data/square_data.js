@@ -30,4 +30,13 @@ const getCompleteOrders = async () => {
   return response.json();
 };
 
-export { getOrders, completeOrder, getCompleteOrders };
+const deleteCompletedOrder = async (orderId) => {
+  await fetch(`${clientCredentials.databaseURL}/completed-orders/${orderId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export { getOrders, completeOrder, getCompleteOrders, deleteCompletedOrder };
