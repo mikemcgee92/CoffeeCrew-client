@@ -20,6 +20,9 @@ export default function NavBar() {
             <Link className="nav-link" href="/recipes">
               All Recipes
             </Link>
+            <Link className="nav-link" href="/ticketrail">
+              Ticket Rail
+            </Link>
           </Nav>
 
           <Button variant="danger" onClick={signOut}>
