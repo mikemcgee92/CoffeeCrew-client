@@ -35,7 +35,7 @@ export default function TicketRail() {
   return (
     <>
       <title>Ticket Rail</title>
-      <div>
+      <div style={{ flexWrap: 'wrap' }}>
         {orders?.map((order) => {
           if (completedIds?.some((completedId) => completedId.order_id === order.id)) {
             return '';
@@ -43,18 +43,28 @@ export default function TicketRail() {
           const itemNames = order.line_items.map((lineItem) => lineItem.name);
           const quantities = order.line_items.map((lineItem) => lineItem.quantity);
           return (
-            <div key={order.id}>
+            <div
+              key={order.id}
+              className="container-styled"
+              style={{
+                width: '25vw',
+                minWidth: '250px',
+                display: 'inline-block',
+                verticalAlign: 'top',
+                margin: '8px',
+              }}
+            >
               {itemNames.map((itemName, index) => (
-                <p>
-                  {quantities[index]}x {itemName}
-                  {recipes?.some((recipe) => recipe.label === itemName) ? (
-                    <button type="button" onClick={() => router.push(`/recipes/${recipes.find((recipe) => recipe.label === itemName).id}`)}>
+                <div key={itemName} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
+                  <span>
+                    {quantities[index]}x {itemName}
+                  </span>
+                  {recipes?.some((recipe) => recipe.label === itemName) && (
+                    <button type="button" style={{ marginLeft: '8px' }} onClick={() => router.push(`/recipes/${recipes.find((recipe) => recipe.label === itemName).id}`)}>
                       Recipe
                     </button>
-                  ) : (
-                    ''
                   )}
-                </p>
+                </div>
               ))}
               <button type="button" onClick={() => handleComplete(order)}>
                 Completed

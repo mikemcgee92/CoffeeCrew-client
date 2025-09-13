@@ -42,7 +42,9 @@ export default function RecipeDetailPage() {
       <Image src={recipe.image_url} alt={recipe.label} />
       <h1>{recipe.label}</h1>
       <h5>{recipe.category_id?.label}</h5>
-      <h7>Ingredients:</h7>
+      <div style={{ textAlign: 'center', margin: '16px 0' }}>
+        <span>Ingredients:</span>
+      </div>
       <div className="radio-inputs" type="radio" name="sizes" value={selectedSize}>
         {sizes?.map((size) => (
           <label className="radio">
