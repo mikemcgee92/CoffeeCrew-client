@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { Button, Modal, Form } from 'react-bootstrap';
 import { getCategories, createCategory, deleteCategory, updateCategory } from '../utils/data/category_data';
+import getUserInfo from '../utils/data/userinfo_data';
 
 function Home() {
   const auth = firebase.auth();
@@ -18,6 +19,7 @@ function Home() {
   const [editId, setEditId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
 
   const handleClose = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -25,6 +27,9 @@ function Home() {
   useEffect(() => {
     getCategories().then(setCategories);
   }, []);
+  useEffect(() => {
+    getUserInfo(user.uid).then(setUserInfo);
+  }, [user.uid]);
 
   return (
     <div
@@ -79,9 +84,13 @@ function Home() {
         ))}
       </div>
       <div>
-        <Button className="btn-new" onClick={handleShowModal}>
-          + New Category
-        </Button>
+        {userInfo.is_manager ? (
+          <Button className="btn-new" onClick={handleShowModal}>
+            + New Category
+          </Button>
+        ) : (
+          ''
+        )}
 
         <Modal className="category-modal" show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>

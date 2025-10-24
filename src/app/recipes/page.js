@@ -6,11 +6,12 @@ import { Button, Form } from 'react-bootstrap';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { getRecipes, deleteRecipe } from '../../utils/data/recipe_data';
+import getUserInfo from '../../utils/data/userinfo_data';
 
 export default function RecipesPage() {
   const auth = firebase.auth();
   const user = auth.currentUser;
-
+  const [userInfo, setUserInfo] = useState({});
   const [recipesArray, setRecipesArray] = useState([]);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +28,10 @@ export default function RecipesPage() {
       setRecipesArray(filteredData);
     }
   }, [query, searchTerm, filteredRecipes]);
+
+  useEffect(() => {
+    getUserInfo(user.uid).then(setUserInfo);
+  }, [user.uid]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -86,9 +91,13 @@ export default function RecipesPage() {
         ))}
       </div>
       <div>
-        <Button className="btn btn-success" onClick={() => router.push('/recipes/new')}>
-          + New Recipe
-        </Button>
+        {userInfo.is_manager ? (
+          <Button className="btn btn-success" onClick={() => router.push('/recipes/new')}>
+            + New Recipe
+          </Button>
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );

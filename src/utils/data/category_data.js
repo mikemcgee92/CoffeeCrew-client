@@ -6,6 +6,7 @@ const getCategories = async () => {
     headers: {
       'Content-Type': 'application/json',
     },
+    mode: 'cors',
   });
   return response.json();
 };
