@@ -1,10 +1,23 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
+import getUserInfo from '../utils/data/userinfo_data';
 
 export default function NavBar() {
+  const auth = firebase.auth();
+  const user = auth.currentUser;
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    getUserInfo(user.uid).then(setUserInfo);
+  }, [user.uid]);
+
   return (
     <Navbar collapseOnSelect expand="lg" className="navbar">
       <Container>
@@ -23,6 +36,13 @@ export default function NavBar() {
             <Link className="nav-link" href="/ticketrail">
               Ticket Rail
             </Link>
+            {userInfo.is_manager ? (
+              <Link className="nav-link" href="/ingredients">
+                ingredients
+              </Link>
+            ) : (
+              ''
+            )}
           </Nav>
 
           <Button variant="danger" onClick={signOut}>
